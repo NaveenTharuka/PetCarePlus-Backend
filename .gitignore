@@ -1,0 +1,147 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+pythonenv*
+
+# Virtual Environment
+.venv/
+venv/
+env/
+virtualenv/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Jupyter Notebook
+.ipynb_checkpoints/
+*.ipynb
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+*.env
+
+# Database
+*.db
+*.sqlite
+*.sqlite3
+
+# Logs
+logs/
+*.log
+logfile-*
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+.mypy_cache/
+.dmypy.json
+dmypy.json
+.mypy_cache/
+.ruff_cache/
+
+# FastAPI/Starlette specific
+*.pid
+*.port
+
+# Docker
+docker-compose.override.yml
+*.tar.gz
+*.tar
+docker-compose.*.yml
+
+# Uploads/Media
+uploads/
+media/
+static/uploads/
+temp/
+tmp/
+
+# Alembic (if using migrations)
+alembic/versions/*.pyc
+alembic/__pycache__/
+
+# Secret/Key files
+*.pem
+*.key
+*.crt
+*.p12
+secrets/
+credentials.json
+
+# OS generated files
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# Coverage reports
+.coverage
+.coverage.*
+coverage.xml
+*.cover
+.hypothesis/
+
+# pyenv
+.python-version
+
+# pipenv
+Pipfile.lock
+
+# poetry
+poetry.lock
+
+# pdm
+.pdm.toml
+
+# mypy
+.mypy_cache/
+
+# pyre
+.pyre/
+
+# pytype
+.pytype/
+
+# profiling data
+.prof
+*.prof
+
+# celery
+celerybeat-schedule
+celerybeat.pid
+
+# redis
+dump.rdb
+
+# sentry
+.sentry-native/
+
+# mkdocs documentation
+site/
+
+# backups
+*.bak
+*.backup
+*.old
