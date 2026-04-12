@@ -1,11 +1,12 @@
 from sqlalchemy import Column, Integer, String, Boolean, ForeignKey
 from sqlalchemy.dialects.postgresql import UUID
+import uuid
 from sqlalchemy.orm import relationship
 from app.database import Base
 
 class User(Base):
     __tablename__ = "users"
-    id = Column(UUID(as_uuid=True), primary_key=True)
+    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
     name = Column(String)
     email = Column(String)
     password = Column(String)
@@ -15,11 +16,11 @@ class User(Base):
 
 class Pet(Base):
     __tablename__ = "pets"
-    id = Column(UUID(as_uuid=True), primary_key=True)
+    id = Column(UUID(as_uuid=True), primary_key=True ,default=uuid.uuid4)
     name = Column(String)
-    type = Column(String)
+    p_type = Column(String)
     breed = Column(String)
-    color = Column(String)
+    colour = Column(String)
     isRegistered = Column(Boolean)
     owner_id = Column(UUID(as_uuid=True), ForeignKey("users.id"), nullable=True)  # nullable here
     owner = relationship("User", back_populates="pets")

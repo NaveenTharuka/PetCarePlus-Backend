@@ -3,16 +3,23 @@ from uuid import UUID
 from typing import Optional
 
 class PetBase(BaseModel):
+    owner_id: Optional[UUID]
     name: str
-    type: str
+    p_type: str
     breed: str
-    color: str
+    colour: str
     isRegistered : bool
 
 class PetCreate(PetBase):
-    owner_id: Optional[UUID]
+    pass
 
 class PetOut(PetBase):
     id : UUID
-    owner_id: Optional[UUID]
     model_config = ConfigDict(from_attributes=True)
+
+class PetEdit(BaseModel):
+    name: str
+    p_type: str
+    breed: str
+    colour: str
+    isRegistered : bool
