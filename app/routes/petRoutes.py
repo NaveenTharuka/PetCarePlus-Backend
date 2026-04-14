@@ -32,15 +32,8 @@ def get_pets_by_user_id(user_id : UUID, db : Session = Depends(get_db)):
 def create_pet(user_id : UUID, pet: PetCreate, db : Session = Depends(get_db)):
 
     db_pet = PetServices.create_pet(user_id, pet, db)
-
-    try:
-        db.add(db_pet)
-        db.commit()
-        db.refresh(db_pet)
-    except Exception as e:
-        db.rollback()
-        raise HTTPException(status_code=500, detail=str(e))
     return db_pet
+    
 
 @router.delete("/pets/delete/{pet_id}")
 def delete_pet(pet_id : UUID , db : Session = Depends(get_db)):

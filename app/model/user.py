@@ -6,10 +6,14 @@ class UserBase(BaseModel):
     name : str
     email : str
     password : str
+    role : str
     phone : str
     address : str
     
 class UserCreate(UserBase):
+    pass
+
+class UserUpdate(UserBase):
     pass
 
 class UserOut(UserBase):
