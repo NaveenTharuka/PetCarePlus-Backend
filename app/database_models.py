@@ -1,29 +1,79 @@
-from sqlalchemy import Column, Integer, String, Boolean, ForeignKey, Date
+from sqlalchemy import Column, String, Boolean, ForeignKey, Date, DateTime
 from sqlalchemy.dialects.postgresql import UUID
-import uuid
 from sqlalchemy.orm import relationship
+from datetime import datetime
+import uuid
+
 from app.database import Base
+
 
 class User(Base):
     __tablename__ = "users"
+
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
-    name = Column(String)
-    email = Column(String)
-    role = Column(String)
-    password = Column(String)
-    phone = Column(String)
-    address = Column(String)
-    pets = relationship("Pet", back_populates="owner")  # No nullable parameter here
+    name = Column(String, nullable=False)
+    email = Column(String, unique=True, index=True, nullable=False)
+    role = Column(String, nullable=True)
+    password = Column(String, nullable=False)
+    phone = Column(String, nullable=True)
+    address = Column(String, nullable=True)
+
+    created_at = Column(DateTime, default=datetime.utcnow)
+
+    pets = relationship(
+        "Pet",
+        back_populates="owner",
+        cascade="all, delete-orphan"
+    )
+
 
 class Pet(Base):
     __tablename__ = "pets"
-    id = Column(UUID(as_uuid=True), primary_key=True ,default=uuid.uuid4)
-    name = Column(String)
-    species = Column(String)
-    breed = Column(String)
-    colour = Column(String)
-    isRegistered = Column(Boolean)
-    gender = Column(String)
-    nextVaccination = Column(Date)
-    owner_id = Column(UUID(as_uuid=True), ForeignKey("users.id"), nullable=True)  # nullable here
+
+    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    name = Column(String, nullable=False)
+    species = Column(String, nullable=False)
+    breed = Column(String, nullable=True)
+    colour = Column(String, nullable=True)
+    is_registered = Column(Boolean, default=False)
+    gender = Column(String, nullable=True)
+
+    owner_id = Column(
+        UUID(as_uuid=True),
+        ForeignKey("users.id"),
+        nullable=False,
+        index=True
+    )
+
+    created_at = Column(DateTime, default=datetime.utcnow)
+
     owner = relationship("User", back_populates="pets")
+
+    vaccinations = relationship(
+        "Vaccination",
+        back_populates="pet",
+        cascade="all, delete-orphan"
+    )
+
+
+class Vaccination(Base):
+    __tablename__ = "vaccinations"
+
+    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+
+    pet_id = Column(
+        UUID(as_uuid=True),
+        ForeignKey("pets.id"),
+        nullable=False,
+        index=True
+    )
+
+    vaccine_name = Column(String, nullable=False)
+    vaccine_date = Column(Date, nullable=False)
+    vet_name = Column(String, nullable=True)
+    next_due_date = Column(Date, nullable=True)
+    notes = Column(String, nullable=True)
+
+    created_at = Column(DateTime, default=datetime.utcnow)
+
+    pet = relationship("Pet", back_populates="vaccinations")
