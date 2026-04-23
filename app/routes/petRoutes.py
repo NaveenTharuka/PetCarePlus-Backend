@@ -1,6 +1,8 @@
+from fastapi import UploadFile
 from app.model.vaccination import VaccinationCreate , VaccinationOut
 import app.services.pet_services
 import app.services.vaccineServices
+import app.services.storage
 
 from uuid import UUID
 from app.model.pet import PetOut, PetCreate, PetEdit
@@ -12,6 +14,7 @@ router = APIRouter()
 
 PetServices = app.services.pet_services
 VaccineServices = app.services.vaccineServices
+StorageServices = app.services.storage
 
 
 @router.get("/pets", response_model=list[PetOut])

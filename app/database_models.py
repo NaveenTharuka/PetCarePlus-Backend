@@ -37,7 +37,7 @@ class Pet(Base):
     colour = Column(String, nullable=True)
     is_registered = Column(Boolean, default=False)
     gender = Column(String, nullable=True)
-
+    reports = relationship("Report", backref="pet", cascade="all, delete")
     owner_id = Column(
         UUID(as_uuid=True),
         ForeignKey("users.id"),
@@ -77,3 +77,15 @@ class Vaccination(Base):
     created_at = Column(DateTime, default=datetime.utcnow)
 
     pet = relationship("Pet", back_populates="vaccinations")
+
+class Report(Base):
+    __tablename__ = "reports"
+
+    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+
+    title = Column(String, nullable=False)
+    file_path = Column(String, nullable=False)
+
+    created_at = Column(DateTime, default=datetime.utcnow)
+
+    pet_id = Column(UUID(as_uuid=True), ForeignKey("pets.id"), nullable=False)

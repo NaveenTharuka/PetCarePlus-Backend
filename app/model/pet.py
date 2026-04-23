@@ -16,8 +16,7 @@ class PetBase(BaseModel):
 
 # 🔹 For creating a pet
 class PetCreate(PetBase):
-    owner_id: UUID
-
+    pass
 
 # 🔹 For updating a pet
 class PetEdit(BaseModel):
