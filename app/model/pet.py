@@ -1,29 +1,37 @@
 from pydantic import BaseModel, ConfigDict
 from uuid import UUID
-from datetime import date
-from typing import Optional
+from typing import Optional, List
+
+from app.model.vaccination import VaccinationOut
+
 
 class PetBase(BaseModel):
-    owner_id: Optional[UUID]
     name: str
     species: str
-    breed: str
-    colour: str
-    isRegistered : bool
-    gender : str
-    nextVaccination : date
-    
+    breed: Optional[str] = None
+    colour: Optional[str] = None
+    is_registered: bool
+    gender: Optional[str] = None
 
+
+# 🔹 For creating a pet
 class PetCreate(PetBase):
     pass
 
-class PetOut(PetBase):
-    id : UUID
-    model_config = ConfigDict(from_attributes=True)
-
+# 🔹 For updating a pet
 class PetEdit(BaseModel):
-    name: str
-    p_type: str
-    breed: str
-    colour: str
-    isRegistered : bool
+    name: Optional[str] = None
+    species: Optional[str] = None
+    breed: Optional[str] = None
+    colour: Optional[str] = None
+    is_registered: Optional[bool] = None
+    gender: Optional[str] = None
+
+
+# 🔹 For returning pet data
+class PetOut(PetBase):
+    id: UUID
+    owner_id: UUID
+    vaccinations: List[VaccinationOut] = []
+
+    model_config = ConfigDict(from_attributes=True)
