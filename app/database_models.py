@@ -3,6 +3,8 @@ from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import relationship
 from datetime import datetime
 import uuid
+from sqlalchemy.sql import func
+
 
 from app.database import Base
 
@@ -32,12 +34,14 @@ class Pet(Base):
 
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
     name = Column(String, nullable=False)
+    date_of_birth = Column(Date, nullable=True)
+    image_url = Column(String, nullable=True)
     species = Column(String, nullable=False)
     breed = Column(String, nullable=True)
     colour = Column(String, nullable=True)
     is_registered = Column(Boolean, default=False)
     gender = Column(String, nullable=True)
-    reports = relationship("Report", backref="pet", cascade="all, delete")
+    reports = relationship("Report", back_populates="pet", cascade="all, delete-orphan")
     owner_id = Column(
         UUID(as_uuid=True),
         ForeignKey("users.id"),
@@ -86,6 +90,6 @@ class Report(Base):
     title = Column(String, nullable=False)
     file_path = Column(String, nullable=False)
 
-    created_at = Column(DateTime, default=datetime.utcnow)
-
+    created_at = Column(DateTime(timezone=True), server_default=func.now())
     pet_id = Column(UUID(as_uuid=True), ForeignKey("pets.id"), nullable=False)
+    pet = relationship("Pet", back_populates="reports")

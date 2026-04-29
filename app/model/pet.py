@@ -1,6 +1,8 @@
-from pydantic import BaseModel, ConfigDict
+from pydantic import BaseModel, ConfigDict, Field
 from uuid import UUID
 from typing import Optional, List
+from datetime import date
+from app.model.report import ReportOut
 
 from app.model.vaccination import VaccinationOut
 
@@ -10,9 +12,9 @@ class PetBase(BaseModel):
     species: str
     breed: Optional[str] = None
     colour: Optional[str] = None
-    is_registered: bool
+    is_registered: bool = False
     gender: Optional[str] = None
-
+    date_of_birth : Optional[date] = None
 
 # 🔹 For creating a pet
 class PetCreate(PetBase):
@@ -26,12 +28,15 @@ class PetEdit(BaseModel):
     colour: Optional[str] = None
     is_registered: Optional[bool] = None
     gender: Optional[str] = None
-
+    image_url : Optional[str] = None
+    date_of_birth : Optional[date] = None
 
 # 🔹 For returning pet data
 class PetOut(PetBase):
     id: UUID
     owner_id: UUID
-    vaccinations: List[VaccinationOut] = []
+    vaccinations: List[VaccinationOut] = Field(default_factory=list)
+    reports: List[ReportOut] = Field(default_factory=list)
+
 
     model_config = ConfigDict(from_attributes=True)
