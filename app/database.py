@@ -1,6 +1,7 @@
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import create_engine
+from sqlalchemy.pool import NullPool
 from dotenv import load_dotenv
 import os
 from pathlib import Path
@@ -18,8 +19,9 @@ if not DB_URL:
 
 engine = create_engine(
     DB_URL,
-    pool_pre_ping=True,
-    echo=True
+    poolclass=NullPool
+    # pool_pre_ping=True,
+    # echo=True
 )
 
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
