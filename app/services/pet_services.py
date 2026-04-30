@@ -19,6 +19,7 @@ def create_pet(user_id: UUID, pet: PetCreate, db: Session):
         breed=pet.breed,
         date_of_birth=pet.date_of_birth,
         image_url=pet.image_url,
+        weight=pet.weight,
         colour=pet.colour,
         is_registered=pet.is_registered,
         gender=pet.gender,

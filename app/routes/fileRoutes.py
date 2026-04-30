@@ -10,7 +10,7 @@ from app.model.report import ReportOut
 from app.database import get_db
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
-
+from app.model.pet import PetOut
 router = APIRouter()
 
 UploadServices = app.services.reportUploadServices
@@ -23,3 +23,7 @@ async def upload_report(
     db: Session = Depends(get_db)
 ):
     return await UploadServices.upload_report(pet_id, file, title, db)
+
+@router.post("/pet/{pet_id}/picture/upload", response_model=PetOut)
+async def upload_pet_picture(pet_id: UUID, file: UploadFile = File(...), db: Session = Depends(get_db)):
+    return await UploadServices.upload_pet_picture(pet_id, file, db)

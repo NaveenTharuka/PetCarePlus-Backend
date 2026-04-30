@@ -7,6 +7,7 @@ from sqlalchemy.sql import func
 
 
 from app.database import Base
+from sqlalchemy.types import Float
 
 
 class User(Base):
@@ -36,6 +37,7 @@ class Pet(Base):
     name = Column(String, nullable=False)
     date_of_birth = Column(Date, nullable=True)
     image_url = Column(String, nullable=True)
+    weight = Column(Float, nullable=True)
     species = Column(String, nullable=False)
     breed = Column(String, nullable=True)
     colour = Column(String, nullable=True)

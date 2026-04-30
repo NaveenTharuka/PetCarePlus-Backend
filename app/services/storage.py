@@ -1,19 +1,12 @@
-from fastapi import UploadFile
+from fastapi import UploadFile, HTTPException
 import httpx
 import os
-from uuid import uuid4
 
-BUCKET = "PetCarePlusReports"
+BUCKET = "PetCarePlus"
 
-async def upload_file(file: UploadFile, name : str):
+async def upload_file(file: UploadFile, file_name : str, folder : str):
 
-    file_name_prefix = uuid4()
-    file_ext = file.filename.split(".")[-1] if file.filename and "." in file.filename else "bin"
-    
-    safe_name = name.replace(" ", "_").replace("/", "_").replace("\\", "_")
-    file_name = f"{safe_name}-{file_name_prefix}.{file_ext}"
-
-    url = f"{os.getenv('SUPABASE_URL')}/storage/v1/object/{BUCKET}/{file_name}"
+    url = f"{os.getenv('SUPABASE_URL')}/storage/v1/object/{BUCKET}/{folder}/{file_name}"
 
     headers = {
         "Authorization": f"Bearer {os.getenv('SUPABASE_KEY')}",
@@ -22,14 +15,22 @@ async def upload_file(file: UploadFile, name : str):
 
     content = await file.read()
 
-    async with httpx.AsyncClient(timeout=60.0) as client:
-        response = await client.post(
-            url,
-            headers=headers,
-            content=content
-        )
+    file_path = f"{folder}/{file_name}"
 
-    if response.status_code not in [200, 201]:
-        raise Exception(f"Upload failed: {response.text}")
+    try:
+        async with httpx.AsyncClient(timeout=60.0) as client:
+            response = await client.post(
+                url,
+                headers=headers,
+                content=content
+            )
+        
+        if response.status_code not in [200, 201]:
+            raise HTTPException(status_code=400, detail="Bad request")
 
-    return file_name
+        return file_path
+
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+    

@@ -15,6 +15,8 @@ class PetBase(BaseModel):
     is_registered: bool = False
     gender: Optional[str] = None
     date_of_birth : Optional[date] = None
+    weight: Optional[float] = None
+    image_url : Optional[str] = None
 
 # 🔹 For creating a pet
 class PetCreate(PetBase):
