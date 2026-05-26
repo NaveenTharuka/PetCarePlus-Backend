@@ -10,7 +10,7 @@ StorageServices = app.services.storage
 
 SUPABASE_URL = os.getenv("SUPABASE_URL")
 
-IMG_URL =  SUPABASE_URL + "/storage/v1/object/public/" 
+IMG_URL =  SUPABASE_URL + "/storage/v1/object/public/PetCarePlus" 
 
 async def upload_report(pet_id, file, title, db : Session):
     

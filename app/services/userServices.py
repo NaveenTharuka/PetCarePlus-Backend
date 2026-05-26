@@ -19,7 +19,8 @@ def create_user(user: UserCreate, db: Session):
         password=user.password,
         role=user.role,
         phone=user.phone,
-        address=user.address
+        address=user.address,
+        image_url=user.image_url
     )
 
     db.add(db_user)

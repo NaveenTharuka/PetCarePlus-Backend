@@ -17,6 +17,7 @@ class PetBase(BaseModel):
     date_of_birth : Optional[date] = None
     weight: Optional[float] = None
     image_url : Optional[str] = None
+    last_vet_visit : Optional[date] = None
 
 # 🔹 For creating a pet
 class PetCreate(PetBase):
