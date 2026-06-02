@@ -1,45 +1,53 @@
-# 🐾 PetCare Plus - Frontend
 
-PetCare Plus is a modern pet healthcare management platform designed to help pet owners manage their pets' information, vaccination records, medical reports, and healthcare activities in one place.
+---
 
-This repository contains the frontend application built with Next.js.
+# Backend README.md
+
+```md
+# 🐾 PetCare Plus - Backend
+
+PetCare Plus is a pet healthcare management platform that enables pet owners to manage pet profiles, vaccination records, medical reports, and healthcare information.
+
+This repository contains the backend REST API built with FastAPI.
 
 ---
 
 ## 🚀 Features
 
-- User Authentication (Google OAuth via Supabase)
+- RESTful API Architecture
+- Google OAuth Authentication Verification
+- User Management
 - Pet Management
-  - Add Pets
-  - View Pet Profiles
-  - Edit Pet Information
-- Vaccination Tracking
+- Vaccination Management
 - Medical Report Management
-- Responsive UI
-- Secure API Integration
-- Modern User Experience
+- File Upload Support
+- Database Integration
+- Secure Token Validation
 
 ---
 
 ## 🛠️ Tech Stack
 
-- Next.js
-- React
-- JavaScript
-- Tailwind CSS
+- FastAPI
+- Python
+- SQLAlchemy
+- Pydantic
 - Supabase Authentication
-- Axios
+- PostgreSQL
+- Alembic
+- Uvicorn
 
 ---
 
 ## 📂 Project Structure
 
 ```bash
-src/
-├── app/
-├── components/
+app/
+├── controllers/
 ├── services/
-├── hooks/
-├── utils/
-├── context/
-└── assets/
+├── repositories/
+├── models/
+├── schemas/
+├── database/
+├── config/
+└── utils/
