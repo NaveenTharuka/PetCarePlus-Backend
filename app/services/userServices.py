@@ -1,9 +1,10 @@
 from sqlalchemy.orm import Session
-from fastapi import HTTPException
+from fastapi import HTTPException, Header
 from uuid import UUID
 
 from app.database_models import User
 from app.model.user import UserCreate, UserUpdate
+from app.supabase import supabase
 
 
 # 🔹 Create User
@@ -74,3 +75,39 @@ def update_user(user_id: UUID, user: UserUpdate, db: Session):
     db.refresh(db_user)
 
     return db_user
+
+def google_user(db:Session, authorization:str=Header(...) ):
+
+    token = authorization.replace("Bearer", "").strip()
+
+    data =  supabase.auth.get_user(token)
+
+    if not data or not data.user:
+        raise HTTPException(
+            status_code=404,
+            detail="Invalid token"
+        )
+
+    new_user = data.user
+    db_user = db.query(User).filter(new_user.email == User.email).first()
+
+    if db_user:
+        return db_user
+
+    db_new_user = User(
+        id=new_user.id,
+        name=new_user.user_metadata.get("full_name"),
+        email=new_user.email,
+        password=None,
+        role="user",
+        phone=None,
+        address=None,
+        image_url=new_user.user_metadata.get("picture")
+    )
+
+    db.add(db_new_user)
+    db.commit()
+    db.refresh(db_new_user)
+
+    return db_new_user
+    

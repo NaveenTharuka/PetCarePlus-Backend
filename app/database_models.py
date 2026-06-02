@@ -17,7 +17,7 @@ class User(Base):
     name = Column(String, nullable=False)
     email = Column(String, unique=True, index=True, nullable=False)
     role = Column(String, nullable=True)
-    password = Column(String, nullable=False)
+    password = Column(String, nullable=True)
     phone = Column(String, nullable=True)
     address = Column(String, nullable=True)
     image_url = Column(String, nullable=True)
