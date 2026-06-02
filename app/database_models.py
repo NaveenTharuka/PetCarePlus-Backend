@@ -17,10 +17,10 @@ class User(Base):
     name = Column(String, nullable=False)
     email = Column(String, unique=True, index=True, nullable=False)
     role = Column(String, nullable=True)
-    password = Column(String, nullable=False)
+    password = Column(String, nullable=True)
     phone = Column(String, nullable=True)
     address = Column(String, nullable=True)
-
+    image_url = Column(String, nullable=True)
     created_at = Column(DateTime, default=datetime.utcnow)
 
     pets = relationship(
@@ -44,6 +44,7 @@ class Pet(Base):
     is_registered = Column(Boolean, default=False)
     gender = Column(String, nullable=True)
     reports = relationship("Report", back_populates="pet", cascade="all, delete-orphan")
+    last_vet_visit = Column(Date, nullable=True)
     owner_id = Column(
         UUID(as_uuid=True),
         ForeignKey("users.id"),

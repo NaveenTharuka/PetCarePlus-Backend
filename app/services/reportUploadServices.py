@@ -10,7 +10,7 @@ StorageServices = app.services.storage
 
 SUPABASE_URL = os.getenv("SUPABASE_URL")
 
-IMG_URL =  SUPABASE_URL + "/storage/v1/object/public/" 
+IMG_URL =  SUPABASE_URL + "/storage/v1/object/public/PetCarePlus" 
 
 async def upload_report(pet_id, file, title, db : Session):
     
@@ -46,6 +46,8 @@ async def upload_pet_picture(pet_id, file, db : Session):
 
     file_path = await StorageServices.upload_file(file, file_name, "ProfilePhotosPet")
     db_pet.image_url = IMG_URL + file_path
+    
+    db.add(db_pet)
     db.commit()
     db.refresh(db_pet)
     return db_pet

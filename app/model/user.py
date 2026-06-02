@@ -11,6 +11,7 @@ class UserBase(BaseModel):
     role: Optional[str] = None
     phone: Optional[str] = None
     address: Optional[str] = None
+    image_url: Optional[str] = None
 
 
 # 🔹 Create user (password required)

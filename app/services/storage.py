@@ -15,7 +15,7 @@ async def upload_file(file: UploadFile, file_name : str, folder : str):
 
     content = await file.read()
 
-    file_path = f"{folder}/{file_name}"
+    file_path = f"/{folder}/{file_name}"
 
     try:
         async with httpx.AsyncClient(timeout=60.0) as client:
