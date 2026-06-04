@@ -22,7 +22,7 @@ def get_all_pets(db: Session = Depends(get_db)):
     pets = PetServices.get_all_pets(db)
     return pets
 
-@router.get("/pets/{pet_id}", response_model=PetOut)
+@router.get("/pet/{pet_id}", response_model=PetOut)
 def get_pet_by_id(pet_id : UUID, db : Session = Depends(get_db)):
     pet = PetServices.get_pet_by_id(pet_id, db)
     return pet

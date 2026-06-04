@@ -30,7 +30,7 @@ def create_user(user : UserCreate , db : Session = Depends(get_db)):
 # def get_me(user = Depends(get_current_user)):
 #     return user
 
-@router.get("/google_user")
+@router.get("/google_user", response_model=UserOut)
 def google_user(authorization: str = Header(...), db: Session = Depends(get_db)):
     user = userServices.google_user(db , authorization)
     return user

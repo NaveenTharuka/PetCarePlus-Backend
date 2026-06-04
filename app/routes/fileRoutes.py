@@ -27,3 +27,11 @@ async def upload_report(
 @router.post("/pet/{pet_id}/picture/upload", response_model=PetOut)
 async def upload_pet_picture(pet_id: UUID, file: UploadFile = File(...), db: Session = Depends(get_db)):
     return await UploadServices.upload_pet_picture(pet_id, file, db)
+
+@router.delete("/pet/report/{report_id}/delete")
+async def delete_report(report_id : UUID , db : Session = Depends(get_db)):
+    return await UploadServices.delete_pet_report(report_id, db)
+
+@router.get("/pet/report/{report_id}/download", response_model=str)
+def get_download_link(report_id :UUID , db : Session = Depends(get_db)):
+    return UploadServices.get_report_download_link(report_id, db)
