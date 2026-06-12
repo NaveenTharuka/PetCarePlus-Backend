@@ -44,7 +44,6 @@ class Pet(Base):
     is_registered = Column(Boolean, default=False)
     gender = Column(String, nullable=True)
     reports = relationship("Report", back_populates="pet", cascade="all, delete-orphan")
-    last_vet_visit = Column(Date, nullable=True)
     owner_id = Column(
         UUID(as_uuid=True),
         ForeignKey("users.id"),
@@ -58,6 +57,12 @@ class Pet(Base):
 
     vaccinations = relationship(
         "Vaccination",
+        back_populates="pet",
+        cascade="all, delete-orphan"
+    )
+
+    vet_visits = relationship(
+        "VetVisit",
         back_populates="pet",
         cascade="all, delete-orphan"
     )
@@ -96,3 +101,17 @@ class Report(Base):
     created_at = Column(DateTime(timezone=True), server_default=func.now())
     pet_id = Column(UUID(as_uuid=True), ForeignKey("pets.id"), nullable=False)
     pet = relationship("Pet", back_populates="reports")
+
+class VetVisit(Base):
+    __tablename__ = "vet_visits"
+
+    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    pet_id = Column(UUID(as_uuid=True), ForeignKey("pets.id"), nullable=False)
+    vet_name = Column(String, nullable=False)
+    visit_date = Column(Date, nullable=False)
+    reason = Column(String, nullable=False)
+    note = Column(String, nullable=True)
+
+    created_at = Column(DateTime, default=datetime.utcnow)
+
+    pet = relationship("Pet", back_populates="vet_visits")  

@@ -3,7 +3,7 @@ from uuid import UUID
 from typing import Optional, List
 from datetime import date
 from app.model.report import ReportOut
-
+from app.model.vetVisits import vetVisitOut
 from app.model.vaccination import VaccinationOut
 
 
@@ -17,7 +17,7 @@ class PetBase(BaseModel):
     date_of_birth : Optional[date] = None
     weight: Optional[float] = None
     image_url : Optional[str] = None
-    last_vet_visit : Optional[date] = None
+
 
 # 🔹 For creating a pet
 class PetCreate(PetBase):
@@ -40,6 +40,6 @@ class PetOut(PetBase):
     owner_id: UUID
     vaccinations: List[VaccinationOut] = Field(default_factory=list)
     reports: List[ReportOut] = Field(default_factory=list)
-
+    vet_visits: List[vetVisitOut] = Field(default_factory=list)
 
     model_config = ConfigDict(from_attributes=True)
