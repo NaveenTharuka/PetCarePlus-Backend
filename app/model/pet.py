@@ -17,21 +17,28 @@ class PetBase(BaseModel):
     date_of_birth : Optional[date] = None
     weight: Optional[float] = None
     image_url : Optional[str] = None
-
+    profile_pic_id: Optional[UUID] = None
 
 # 🔹 For creating a pet
-class PetCreate(PetBase):
-    pass
+class PetCreate(BaseModel):
+    name: str
+    species: str
+    breed: Optional[str] = None
+    colour: Optional[str] = None
+    is_registered: bool = False
+    gender: Optional[str] = None
+    date_of_birth : Optional[date] = None
+    weight: Optional[float] = None
 
 # 🔹 For updating a pet
 class PetEdit(BaseModel):
     name: Optional[str] = None
     species: Optional[str] = None
     breed: Optional[str] = None
+    weight: Optional[float] = None
     colour: Optional[str] = None
     is_registered: Optional[bool] = None
     gender: Optional[str] = None
-    image_url : Optional[str] = None
     date_of_birth : Optional[date] = None
 
 # 🔹 For returning pet data

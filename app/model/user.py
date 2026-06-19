@@ -12,6 +12,7 @@ class UserBase(BaseModel):
     phone: Optional[str] = None
     address: Optional[str] = None
     image_url: Optional[str] = None
+    profile_pic_id: Optional[UUID] = None
 
 
 # 🔹 Create user (password required)
