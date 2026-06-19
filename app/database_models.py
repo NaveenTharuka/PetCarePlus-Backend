@@ -22,7 +22,8 @@ class User(Base):
     address = Column(String, nullable=True)
     image_url = Column(String, nullable=True)
     created_at = Column(DateTime, default=datetime.utcnow)
-
+    profile_pic_id = Column(UUID(as_uuid=True), ForeignKey("profile_pictures.id"), nullable=True)
+    
     pets = relationship(
         "Pet",
         back_populates="owner",
@@ -37,6 +38,7 @@ class Pet(Base):
     name = Column(String, nullable=False)
     date_of_birth = Column(Date, nullable=True)
     image_url = Column(String, nullable=True)
+    profile_pic_id = Column(UUID(as_uuid=True), ForeignKey("profile_pictures.id"), nullable=True)
     weight = Column(Float, nullable=True)
     species = Column(String, nullable=False)
     breed = Column(String, nullable=True)
@@ -115,3 +117,14 @@ class VetVisit(Base):
     created_at = Column(DateTime, default=datetime.utcnow)
 
     pet = relationship("Pet", back_populates="vet_visits")  
+
+class ProfilePictures(Base):
+    __tablename__="profile_pictures"
+
+    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    user_id=Column(UUID(as_uuid=True), ForeignKey("users.id"), nullable=True)
+    pet_id=Column(UUID(as_uuid=True), ForeignKey("pets.id"), nullable=True)
+    name = Column(String, nullable=True)
+    file_path = Column(String, nullable=False)
+    created_at = Column(DateTime, default=datetime.utcnow)
+    
