@@ -3,6 +3,7 @@ from fastapi import HTTPException, Header
 from uuid import UUID
 
 from app.database_models import User
+from app.services.reportUploadServices import delete_profile_picture
 from app.model.user import UserCreate, UserUpdate
 from app.supabase import supabase
 
@@ -47,11 +48,14 @@ def get_user_by_id(user_id: UUID, db: Session):
 
 
 # 🔹 Delete User
-def delete_user_by_id(user_id: UUID, db: Session):
+async def delete_user_by_id(user_id: UUID, db: Session):
     db_user = db.query(User).filter(User.id == user_id).first()
 
     if not db_user:
         raise HTTPException(status_code=404, detail="User not found")
+
+    if db_user.profile_pic_id:
+        await delete_profile_pic(db, db_user.profile_pic_id)
 
     db.delete(db_user)
     db.commit()
