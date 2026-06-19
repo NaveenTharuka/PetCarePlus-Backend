@@ -3,7 +3,7 @@ from uuid import UUID
 from app.database import get_db
 from fastapi import APIRouter, Depends, HTTPException, Header
 from sqlalchemy.orm import Session
-from app.model.user import UserOut , UserCreate
+from app.model.user import UserOut , UserCreate, UserUpdate
 from app.database_models import User
 from app.services.auth import get_current_user
 import app.services.userServices
@@ -25,6 +25,11 @@ def get_user_by_id(user_id : UUID , db : Session = Depends(get_db)):
 def create_user(user : UserCreate , db : Session = Depends(get_db)):
     new_user = UserServices.create_user(user,db)
     return new_user
+
+@router.patch("/user/{user_id}/update", response_model=UserOut)
+def update_user(user:UserUpdate, user_id:UUID, db: Session=Depends(get_db)):
+    updated_user = userServices.update_user(user_id, user, db)
+    return updated_user
 
 # @router.get("/user/me")
 # def get_me(user = Depends(get_current_user)):

@@ -18,7 +18,6 @@ def create_pet(user_id: UUID, pet: PetCreate, db: Session):
         species=pet.species,
         breed=pet.breed,
         date_of_birth=pet.date_of_birth,
-        image_url=pet.image_url,
         weight=pet.weight,
         colour=pet.colour,
         is_registered=pet.is_registered,
@@ -63,6 +62,9 @@ def delete_pet(pet_id: UUID, db: Session):
 
     if not pet:
         raise HTTPException(status_code=404, detail="Pet not found")
+
+    if pet.profile_pic_id:
+        delete_profile_pic(db, pet.profile_pic_id,"PET")
 
     db.delete(pet)
     db.commit()
