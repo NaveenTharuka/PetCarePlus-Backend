@@ -20,6 +20,8 @@ class VaccinationOut(VaccinationBase):
     model_config = ConfigDict(from_attributes=True)
 
 class VaccinationEdit(BaseModel):
-    vaccineName : str
+    vaccineName : str 
     vaccineDate : date
-    vetName : str
+    dueDate : Optional[date]
+    vetName : Optional[str]
+    notes : Optional[str]

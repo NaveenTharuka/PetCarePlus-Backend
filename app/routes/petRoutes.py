@@ -48,6 +48,3 @@ def delete_pet(pet_id : UUID , db : Session = Depends(get_db)):
 def edit_pet(pet_id : UUID, pet : PetEdit, db : Session = Depends(get_db)):
     return PetServices.edit_pet(pet_id, pet, db)
 
-@router.post("/pet/{pet_id}/vaccine/add", response_model=VaccinationOut)
-def pet_add_vaccination(pet_id : UUID, pet_vaccine : VaccinationCreate , db: Session = Depends(get_db)):
-    return VaccineServices.add_vaccine(pet_id, pet_vaccine, db)
