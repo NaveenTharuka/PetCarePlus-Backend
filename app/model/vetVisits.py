@@ -19,9 +19,10 @@ class vetVisitCreate(BaseModel):
     note:Optional[str] = None
 
 class vetVisitUpdate(BaseModel):
-    vet_name: str
-    visit_date: date
-    reason: str
+    visit_id:UUID
+    vet_name: Optional[str] = None
+    visit_date: Optional[date] = None
+    reason: Optional[str] = None
     note:Optional[str] = None
 
 class vetVisitOut(vetVisitBase):

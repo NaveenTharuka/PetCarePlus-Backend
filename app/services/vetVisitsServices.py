@@ -1,6 +1,6 @@
 from app.database_models import VetVisit, Pet
 from app.database import get_db
-from app.model.vetVisits import vetVisitCreate
+from app.model.vetVisits import vetVisitCreate, vetVisitUpdate
 from sqlalchemy.orm import Session
 from uuid import UUID
 from fastapi import HTTPException
@@ -47,3 +47,33 @@ def get_vet_visit_by_id(visit_id:UUID,db:Session):
     return visit
 
 
+def update_visit(pet_id:UUID, visit:vetVisitUpdate, db: Session):
+    db_pet = db.query(Pet).filter(Pet.id == pet_id).first()
+
+    if not db_pet:
+        raise HTTPException(status_code=404, detail="Pet not found")
+    
+    db_visit = db.query(VetVisit).filter(VetVisit.id == visit.visit_id).first()
+    
+    if not db_visit:
+        raise HTTPException(status_code=404, detail="Visit not found")
+
+    updated_visit = visit.model_dump(exclude_unset=True)
+
+    for key, value in updated_visit.items():
+        setattr(db_visit, key, value)
+
+    db.commit()
+    db.refresh(db_visit)
+
+    return db_visit
+
+def delete_visit(visit_id:UUID,db:Session):
+    db_visit = db.query(VetVisit).filter(VetVisit.id == visit_id).first()
+    if not db_visit:
+        raise HTTPException(status_code=404, detail="Visit not found")
+    
+    db.delete(db_visit)
+    db.commit()
+
+    return {"message": "Visit deleted successfully"}
