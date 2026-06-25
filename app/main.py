@@ -27,3 +27,8 @@ def root():
         "message": "PetCare Plus API is live 🐾",
         "server_time": datetime.utcnow().isoformat()
     }
+@app.get("/health")
+def health():
+    return {
+        "status": "alive"
+    }
