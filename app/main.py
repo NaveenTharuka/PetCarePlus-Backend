@@ -1,4 +1,4 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 from app.routes import userRoutes, petRoutes, fileRoutes, visitRoutes, vaccineRoutes
 from app.database import engine, Base
 from fastapi.middleware.cors import CORSMiddleware
@@ -21,5 +21,9 @@ app.include_router(visitRoutes.router)
 app.include_router(vaccineRoutes.router)
 
 @app.get("/")
-def welcome():
-    return{"message": "Welcome to PetCare+"}
+def root():
+    return {
+        "success": True,
+        "message": "PetCare Plus API is live 🐾",
+        "server_time": datetime.utcnow().isoformat()
+    }
