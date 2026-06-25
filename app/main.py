@@ -2,6 +2,7 @@ from fastapi import FastAPI, HTTPException
 from app.routes import userRoutes, petRoutes, fileRoutes, visitRoutes, vaccineRoutes
 from app.database import engine, Base
 from fastapi.middleware.cors import CORSMiddleware
+from datetime import datetime
 
 Base.metadata.create_all(bind=engine)
 app = FastAPI()
