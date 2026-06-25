@@ -1,18 +1,25 @@
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI
 from app.routes import userRoutes, petRoutes, fileRoutes, visitRoutes, vaccineRoutes
 from app.database import engine, Base
 from fastapi.middleware.cors import CORSMiddleware
 from datetime import datetime
+import os
 
 Base.metadata.create_all(bind=engine)
+
 app = FastAPI()
+
+origins = [
+    "http://localhost:3000",
+]
+
+frontend_url = os.getenv("FRONTEND_URL")
+if frontend_url:
+    origins.append(frontend_url)
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[
-        "http://localhost:3000",
-        os.getenv("FRONTEND_URL")
-    ],
+    allow_origins=origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -31,6 +38,7 @@ def root():
         "message": "PetCare Plus API is live 🐾",
         "server_time": datetime.utcnow().isoformat()
     }
+
 @app.api_route("/health", methods=["GET", "HEAD"])
 def health():
     return {"status": "ok"}
