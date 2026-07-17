@@ -17,7 +17,7 @@ VaccineServices = app.services.vaccineServices
 StorageServices = app.services.storage
 
 
-@router.get("/pets", response_model=list[PetOut])
+@router.api_route("/pets", response_model=list[PetOut], methods=["GET", "HEAD"])
 def get_all_pets(db: Session = Depends(get_db)):
     pets = PetServices.get_all_pets(db)
     return pets
