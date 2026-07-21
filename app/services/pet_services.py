@@ -1,13 +1,13 @@
 from uuid import UUID
 from sqlalchemy.orm import Session
 from fastapi import HTTPException
+from app.services import notificationServices
 
 from app.database_models import Pet, User
 from app.model.pet import PetCreate, PetEdit
 
-
 # 🔹 Create pet
-def create_pet(user_id: UUID, pet: PetCreate, db: Session):
+async def create_pet(user_id: UUID, pet: PetCreate, db: Session):
     pet_owner = db.query(User).filter(User.id == user_id).first()
 
     if not pet_owner:
@@ -32,6 +32,9 @@ def create_pet(user_id: UUID, pet: PetCreate, db: Session):
     except Exception as e:
         db.rollback()
         raise HTTPException(status_code=500, detail=str(e))
+
+    pet_notification = notificationServices.create_pet_notification(db_pet)
+    await notificationServices.create_notification(pet_notification,db)
 
     return db_pet
 

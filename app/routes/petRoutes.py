@@ -38,9 +38,9 @@ def get_pets_by_user_id(user_id : UUID, db : Session = Depends(get_db)):
     return pets
 
 @router.post("/pets/user/{user_id}", response_model=PetOut)
-def create_pet(user_id : UUID, pet: PetCreate, db : Session = Depends(get_db)):
+async def create_pet(user_id : UUID, pet: PetCreate, db : Session = Depends(get_db)):
 
-    db_pet = PetServices.create_pet(user_id, pet, db)
+    db_pet = await PetServices.create_pet(user_id, pet, db)
     return db_pet
     
 

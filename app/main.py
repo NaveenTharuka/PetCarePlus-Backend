@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from app.routes import userRoutes, petRoutes, fileRoutes, visitRoutes, vaccineRoutes, notificationRoutes
 from app.database import engine, Base
+from app.websocket import websocketRoutes
 from fastapi.middleware.cors import CORSMiddleware
 from datetime import datetime
 import os
@@ -26,6 +27,7 @@ app.include_router(fileRoutes.router)
 app.include_router(visitRoutes.router)
 app.include_router(vaccineRoutes.router)
 app.include_router(notificationRoutes.router)
+app.include_router(websocketRoutes.router)
 
 @app.get("/")
 def root():
