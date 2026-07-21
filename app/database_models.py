@@ -128,3 +128,14 @@ class ProfilePictures(Base):
     file_path = Column(String, nullable=False)
     created_at = Column(DateTime, default=datetime.utcnow)
     
+class Notification(Base):
+    __tablename__="notifications"
+
+    id=Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    user_id=Column(UUID(as_uuid=True), ForeignKey("users.id"), nullable=False)
+    notification_type=Column(String, nullable=False)
+    title=Column(String, nullable=False)
+    messege=Column(String, nullable=False)
+    icon=Column(String, nullable=False)
+    read=Column(Boolean, default=False)
+    created_at=Column(DateTime, default=datetime.utcnow)

@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from app.routes import userRoutes, petRoutes, fileRoutes, visitRoutes, vaccineRoutes
+from app.routes import userRoutes, petRoutes, fileRoutes, visitRoutes, vaccineRoutes, notificationRoutes
 from app.database import engine, Base
 from fastapi.middleware.cors import CORSMiddleware
 from datetime import datetime
@@ -25,6 +25,7 @@ app.include_router(petRoutes.router)
 app.include_router(fileRoutes.router)
 app.include_router(visitRoutes.router)
 app.include_router(vaccineRoutes.router)
+app.include_router(notificationRoutes.router)
 
 @app.get("/")
 def root():
@@ -34,6 +35,10 @@ def root():
         "server_time": datetime.utcnow().isoformat()
     }
 
-@app.api_route("/health", methods=["GET", "HEAD"])
+@app.get("/health")
+def health():
+    return {"status": "ok"}
+
+@app.head("/health")
 def health():
     return {"status": "ok"}
