@@ -76,7 +76,7 @@ def create_pet_notification(pet:Pet):
         notification_type = "PET",
         title = "Pet Created",
         messege = f"{pet.name} has been added to your profile",
-        icon = "paw",
+        icon = "pet_supplies",
         read = False,
         created_at = datetime.utcnow()
     )
