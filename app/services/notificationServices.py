@@ -41,6 +41,17 @@ async def create_notification(notification: NotificationCreate, db: Session):
 
     return db_notification
 
+def mark_as_read_all(user_id:UUID, db:Session):
+    db_user = db.query(User).filter(User.id == user_id).first()
+    if not db_user:
+        raise HTTPException(status_code=404, detail="User not found")
+    db_notification = db.query(NotificationModel).filter(NotificationModel.user_id == user_id).all()
+    for notification in db_notification:
+        notification.read = True
+    db.commit()
+    db.refresh(db_notification)
+    return db_notification
+
 def mark_as_read(id:UUID, db:Session):
     db_notification = db.query(NotificationModel).filter(NotificationModel.id == id).first()
     if not db_notification:
@@ -79,7 +90,7 @@ def create_vaccine_notification(vaccine:Vaccination, db:Session):
         notification_type = "VACCINE",
         title = "Vaccine Created",
         messege = f"{vaccine.vaccine_name} has been added to your pet's profile",
-        icon = "paw",
+        icon = "vaccines",
         read = False,
         created_at = datetime.utcnow()
     )
@@ -93,7 +104,7 @@ def create_report_notification(report : Report, db:Session):
         notification_type = "REPORT",
         title = "Report Created",
         messege = f"{report.title} has been added to your pet's  profile",
-        icon = "paw",
+        icon = "description",
         read = False,
         created_at = datetime.utcnow()
     )
