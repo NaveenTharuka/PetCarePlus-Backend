@@ -17,13 +17,13 @@ def get_notifications(user_id:UUID, db: Session = Depends(get_db)):
     return notificationServices.get_notification(user_id, db)
 
 @router.post("/mark-as-read/{notification_id}", response_model=NotificationOut)
-async def mark_as_read(notification_id:UUID, db: Session = Depends(get_db)):
-    return await notificationServices.mark_as_read(notification_id, db)
+def mark_as_read(notification_id:UUID, db: Session = Depends(get_db)):
+    return notificationServices.mark_as_read(notification_id, db)
 
 
-@router.post("/mark-as-read/{user_id}/all", response_model=NotificationOut)
-async def mark_as_read_all(user_id:UUID, db: Session = Depends(get_db)):
-    return await notificationServices.mark_as_read_all(user_id, db)
+@router.post("/mark-as-read/{user_id}/all", response_model=list[NotificationOut])
+def mark_as_read_all(user_id:UUID, db: Session = Depends(get_db)):
+    return notificationServices.mark_as_read_all(user_id, db)
 
 @router.post("/test-notification/{user_id}")
 async def test_notification(user_id:str):
