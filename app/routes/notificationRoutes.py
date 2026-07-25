@@ -13,8 +13,8 @@ async def create_notification(req: NotificationCreate, db: Session = Depends(get
     return await notificationServices.create_notification(req, db)
 
 @router.get("/notifications/{user_id}", response_model=list[NotificationOut])
-async def get_notifications(user_id:UUID, db: Session = Depends(get_db)):
-    return await notificationServices.get_notification(user_id, db)
+def get_notifications(user_id:UUID, db: Session = Depends(get_db)):
+    return notificationServices.get_notification(user_id, db)
 
 @router.post("/mark-as-read/{notification_id}", response_model=NotificationOut)
 async def mark_as_read(notification_id:UUID, db: Session = Depends(get_db)):
