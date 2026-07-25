@@ -48,8 +48,8 @@ def mark_as_read_all(user_id:UUID, db:Session):
     db_notification = db.query(NotificationModel).filter(NotificationModel.user_id == user_id).all()
     for notification in db_notification:
         notification.read = True
-    db.commit()
-    db.refresh(db_notification)
+        db.commit()
+        db.refresh(notification)
     return db_notification
 
 def mark_as_read(id:UUID, db:Session):
