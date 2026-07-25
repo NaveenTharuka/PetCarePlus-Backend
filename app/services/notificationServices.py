@@ -1,5 +1,5 @@
 from app.model.notification import Notification, NotificationCreate, NotificationOut
-from app.database_models import Notification as NotificationModel, User, Pet
+from app.database_models import Notification as NotificationModel, User, Pet, Vaccination, Report
 from app.websocket.manager import manager
 from sqlalchemy.orm import Session
 from datetime import datetime
@@ -41,6 +41,15 @@ async def create_notification(notification: NotificationCreate, db: Session):
 
     return db_notification
 
+def mark_as_read(id:UUID, db:Session):
+    db_notification = db.query(NotificationModel).filter(NotificationModel.id == id).first()
+    if not db_notification:
+        raise HTTPException(status_code=404, detail="Notification not found")
+    db_notification.read = True
+    db.commit()
+    db.refresh(db_notification)
+    return db_notification
+
 def get_notification(user_id: UUID, db: Session):
     db_user = db.query(User).filter(User.id == user_id).first()
     if not db_user:
@@ -61,3 +70,30 @@ def create_pet_notification(pet:Pet):
         created_at = datetime.utcnow()
     )
 
+def create_vaccine_notification(vaccine:Vaccination, db:Session):
+    pet = db.query(Pet).filter(Pet.id == vaccine.pet_id).first()
+    if not pet:
+        raise HTTPException(status_code=404, detail="Pet not found")
+    return NotificationCreate(
+        user_id = pet.owner_id,
+        notification_type = "VACCINE",
+        title = "Vaccine Created",
+        messege = f"{vaccine.vaccine_name} has been added to your pet's profile",
+        icon = "paw",
+        read = False,
+        created_at = datetime.utcnow()
+    )
+
+def create_report_notification(report : Report, db:Session):
+    pet = db.query(Pet).filter(Pet.id == report.pet_id).first()
+    if not pet:
+        raise HTTPException(status_code=404, detail="Pet not found")
+    return NotificationCreate(
+        user_id = pet.owner_id,
+        notification_type = "REPORT",
+        title = "Report Created",
+        messege = f"{report.title} has been added to your pet's  profile",
+        icon = "paw",
+        read = False,
+        created_at = datetime.utcnow()
+    )

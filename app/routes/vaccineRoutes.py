@@ -10,8 +10,8 @@ router = APIRouter()
 VaccineServices = app.services.vaccineServices
 
 @router.post("/pet/{pet_id}/vaccine/add", response_model=VaccinationOut)
-def pet_add_vaccination(pet_id : UUID, pet_vaccine : VaccinationCreate , db: Session = Depends(get_db)):
-    return VaccineServices.add_vaccine(pet_id, pet_vaccine, db)
+async def pet_add_vaccination(pet_id : UUID, pet_vaccine : VaccinationCreate , db: Session = Depends(get_db)):
+    return await VaccineServices.add_vaccine(pet_id, pet_vaccine, db)
 
 @router.delete("/vaccine/delete/{vax_id}")
 def delete_vaccine(vax_id : UUID, db: Session = Depends(get_db)):

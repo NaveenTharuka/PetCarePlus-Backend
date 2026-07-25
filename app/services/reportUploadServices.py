@@ -5,7 +5,7 @@ from enum import Enum
 import os
 
 from app.database_models import Pet, Report, ProfilePictures, User
-from app.services import storage as StorageServices
+from app.services import storage as StorageServices, notificationServices
 from app.supabase import supabase
 
 SUPABASE_URL = os.getenv("SUPABASE_URL")
@@ -58,6 +58,9 @@ async def upload_report(
     # Add public URL for response
     report.file_url = get_public_url(storage_path)
     
+    notification = notificationServices.create_report_notification(report, db)
+    await notificationServices.create_notification(notification, db)
+
     return report
 
 

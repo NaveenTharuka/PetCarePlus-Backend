@@ -2,9 +2,10 @@ from fastapi import HTTPException
 from app.database_models import Pet, Vaccination
 from sqlalchemy.orm.session import Session
 from app.model.vaccination import VaccinationCreate, VaccinationEdit
+from app.services import notificationServices
 from uuid import UUID
 
-def add_vaccine(pet_id : UUID, pet_vaccine : VaccinationCreate, db : Session):
+async def add_vaccine(pet_id : UUID, pet_vaccine : VaccinationCreate, db : Session):
     db_pet = db.query(Pet).filter(Pet.id == pet_id).first()
 
     if not db_pet:
@@ -24,6 +25,10 @@ def add_vaccine(pet_id : UUID, pet_vaccine : VaccinationCreate, db : Session):
         db.add(db_pet)
         db.commit()
         db.refresh(vaccination)
+
+        notification = notificationServices.create_vaccine_notification(vaccination, db)
+        await notificationServices.create_notification(notification, db)
+        
     except Exception as e:
         db.rollback()
         raise HTTPException(status_code=500, detail=str(e))
