@@ -139,3 +139,34 @@ class Notification(Base):
     icon=Column(String, nullable=False)
     read=Column(Boolean, default=False)
     created_at=Column(DateTime, default=datetime.utcnow)
+
+class Appointment(Base):
+    __tablename__ = "appointments"
+
+    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+
+    pet_id = Column(UUID(as_uuid=True), ForeignKey("pets.id"))
+    owner_id = Column(UUID(as_uuid=True), ForeignKey("users.id"))
+    vet_id = Column(UUID(as_uuid=True), ForeignKey("users.id"))
+
+    appointment_date = Column(Date, nullable=False)
+    appointment_time = Column(Time, nullable=False)
+
+    reason = Column(Text)
+
+    status = Column(
+        Enum(
+            "Pending",
+            "Confirmed",
+            "Completed",
+            "Cancelled",
+            "Rejected",
+            name="appointment_status"
+        ),
+        default="Pending"
+    )
+
+    notes = Column(Text)
+
+    created_at = Column(DateTime, default=datetime.utcnow)
+    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
