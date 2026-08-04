@@ -1,5 +1,5 @@
 from app.model.notification import Notification, NotificationCreate, NotificationOut
-from app.database_models import Notification as NotificationModel, User, Pet, Vaccination, Report
+from app.database_models import Notification as NotificationModel, User, Pet, Vaccination, Report, Appointment
 from app.websocket.manager import manager
 from sqlalchemy.orm import Session
 from datetime import datetime
@@ -104,6 +104,20 @@ def create_report_notification(report : Report, db:Session):
         notification_type = "REPORT",
         title = "Report Created",
         messege = f"{report.title} has been added to your pet's  profile",
+        icon = "description",
+        read = False,
+        created_at = datetime.utcnow()
+    )
+
+def create_appointment_notification(appointment: Appointment, db: Session):
+    pet = db.query(Pet).filter(Pet.id == appointment.pet_id).first()
+    if not pet:
+        raise HTTPException(status_code=404, detail="Pet not found")
+    return NotificationCreate(
+        user_id = appointment.vet_id,
+        notification_type = "APPOINTMENT",
+        title = "Appointment Created",
+        messege = f"{pet.name} has an appointment at {appointment.appointment_date} {appointment.appointment_time}",
         icon = "description",
         read = False,
         created_at = datetime.utcnow()
