@@ -1,5 +1,5 @@
 from fastapi import UploadFile
-import app.services.pet_services
+import app.services.petServices
 import app.services.vaccineServices
 import app.services.storage
 import app.services.reportUploadServices

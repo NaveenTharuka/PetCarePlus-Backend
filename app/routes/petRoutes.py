@@ -1,6 +1,6 @@
 from fastapi import UploadFile
 from app.model.vaccination import VaccinationCreate , VaccinationOut
-import app.services.pet_services
+import app.services.petServices
 import app.services.vaccineServices
 import app.services.storage
 
@@ -12,7 +12,7 @@ from sqlalchemy.orm import Session
 
 router = APIRouter()
 
-PetServices = app.services.pet_services
+PetServices = app.services.petServices
 VaccineServices = app.services.vaccineServices
 StorageServices = app.services.storage
 
