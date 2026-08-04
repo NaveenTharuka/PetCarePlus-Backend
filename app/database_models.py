@@ -1,7 +1,7 @@
-from sqlalchemy import Column, String, Boolean, ForeignKey, Date, DateTime
+from sqlalchemy import Column, String, Boolean, ForeignKey, Date, DateTime, Time, Enum
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import relationship
-from datetime import datetime
+from datetime import datetime, time
 import uuid
 from sqlalchemy.sql import func
 
@@ -152,7 +152,7 @@ class Appointment(Base):
     appointment_date = Column(Date, nullable=False)
     appointment_time = Column(Time, nullable=False)
 
-    reason = Column(Text)
+    reason = Column(String)
 
     status = Column(
         Enum(
@@ -166,7 +166,7 @@ class Appointment(Base):
         default="Pending"
     )
 
-    notes = Column(Text)
+    notes = Column(String)
 
     created_at = Column(DateTime, default=datetime.utcnow)
     updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
