@@ -1,6 +1,6 @@
 from app.model.appointmanet import AppointmentCreate, AppointmentResponse, AppointmentUpdateStatus
 from app.database_models import Appointment, User, Pet
-import notificationServices
+from app.services import notificationServices
 
 from sqlalchemy.orm import Session
 from uuid import UUID
@@ -60,3 +60,12 @@ def get_all_owner_appointments(owner_id: UUID, db: Session):
     
     appointments = db.query(Appointment).filter(Appointment.owner_id == owner_id).all()
     return appointments
+
+def update_appointment_status(appointment_id: UUID, status: str, db: Session):
+    appointment = db.query(Appointment).filter(Appointment.id == appointment_id).first()
+    if not appointment:
+        raise HTTPException(status_code=404, detail="Appointment not found")
+    appointment.status = status
+    db.commit()
+    db.refresh(appointment)
+    return appointment
