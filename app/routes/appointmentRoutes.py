@@ -19,3 +19,7 @@ def get_all_vet_appointments(vet_id: UUID, db: Session = Depends(get_db)):
 @router.get("/owner/{owner_id}/appointments", response_model=list[AppointmentResponse])
 def get_all_owner_appointments(owner_id: UUID, db: Session = Depends(get_db)):
     return appointmentServices.get_all_owner_appointments(owner_id, db)
+
+@router.put("/appointment/{appointment_id}/status", response_model=AppointmentResponse)
+def update_appointment_status(appointment_id: UUID, status: str, db: Session = Depends(get_db)):
+    return appointmentServices.update_appointment_status(appointment_id, status, db)
