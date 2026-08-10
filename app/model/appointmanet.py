@@ -17,13 +17,14 @@ class AppointmentUpdateStatus(BaseModel):
 
 class AppointmentResponse(BaseModel):
     id: UUID
-    pet_id: UUID
-    owner_id: UUID
+    pet: str
+    owner:str
     vet_id: UUID
     appointment_date: date
     appointment_time: time
     reason: str
     status: str
+    avatar:str
 
     class Config:
         from_attributes = True
