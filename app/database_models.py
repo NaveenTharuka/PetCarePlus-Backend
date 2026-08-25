@@ -140,6 +140,9 @@ class Notification(Base):
     read=Column(Boolean, default=False)
     created_at=Column(DateTime, default=datetime.utcnow)
 
+from app.model.enum import AppointmentStatus
+
+
 class Appointment(Base):
     __tablename__ = "appointments"
 
@@ -156,14 +159,11 @@ class Appointment(Base):
 
     status = Column(
         Enum(
-            "Pending",
-            "Confirmed",
-            "Completed",
-            "Cancelled",
-            "Rejected",
-            name="appointment_status"
+            AppointmentStatus,
+            name="appointment_status",
+            values_callable=lambda obj: [e.value for e in obj]
         ),
-        default="Pending"
+        default=AppointmentStatus.PENDING
     )
 
     notes = Column(String)
